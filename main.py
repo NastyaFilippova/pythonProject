@@ -1,5 +1,10 @@
 class Student:
-    average_rating = 0
+    def average_grate_of_course(self, course, student_list):
+        students_grades = []
+        for student in student_list:
+            students_grades += student.grades[course]
+            average = round(sum(students_grades) / len(students_grades), 2)
+        return average
 
     def __init__(self, name, surname, gender):
         self.name = name
@@ -9,6 +14,7 @@ class Student:
         self.courses_in_progress = []
         self.grades = {}
         self.average_rating = 0
+        self.list = [name, surname]
 
     def rate_for_lecturer(self, lecturer, course, lecturer_grade):
         if isinstance(lecturer, Lecturer) and course in lecturer.courses_attached and course in self.courses_in_progress:
@@ -40,6 +46,14 @@ class Mentor:
         self.courses_attached = []
 
 class Lecturer(Mentor):
+    def average_grade_of_lection(self, course, lecturer_list):
+        lecturers_grades = []
+        for lecturer in lecturer_list:
+            lecturers_grades += lecturer.teach_grades[course]
+            average = round(sum(lecturers_grades) / len(lecturers_grades), 2)
+        return average
+
+
     def __init__(self, name, surname):
         super().__init__(name, surname)
         self.teach_grades = {}
@@ -91,7 +105,7 @@ second_student.finished_courses += []
 
 
 first_lecturer = Lecturer('Mike', 'Mikelson')
-first_lecturer.courses_attached += ['GIT']
+first_lecturer.courses_attached += ['GIT', 'Python']
 
 second_lecturer = Lecturer('Alex', 'Romanov')
 second_lecturer.courses_attached += ['Python']
@@ -116,6 +130,8 @@ second_student.rate_for_lecturer(first_lecturer, 'GIT', 9)
 second_student.rate_for_lecturer(first_lecturer, 'GIT', 10)
 second_student.rate_for_lecturer(second_lecturer, 'Python', 10)
 second_student.rate_for_lecturer(second_lecturer, 'Python', 10)
+first_student.rate_for_lecturer(first_lecturer, 'Python', 9)
+second_student.rate_for_lecturer(first_lecturer, 'Python', 9)
 
 
 first_student.average_rate()
@@ -133,8 +149,7 @@ second_lecturer.average_lectors_rate()
 # print(first_student > second_student)
 # print(first_lecturer < second_lecturer)
 
+# print(Student.students)
 
-
-
-
-
+print(Student.average_grate_of_course(Student, 'Python', [first_student, second_student]))
+print(Lecturer.average_grade_of_lection(Lecturer, 'Python', [second_lecturer, first_lecturer]))
